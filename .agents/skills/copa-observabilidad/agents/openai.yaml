@@ -1,0 +1,4 @@
+interface:
+  display_name: "Copa: equipo de observabilidad"
+  short_description: "Coordina diagnóstico y soluciones con Dynatrace"
+  default_prompt: "Usa $copa-observabilidad para coordinar los agentes necesarios y resolver este reto con evidencia verificable."
