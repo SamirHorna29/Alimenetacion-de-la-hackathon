@@ -119,4 +119,73 @@ AppRequests
 
 Comunica que se contaron filas almacenadas en la ventana consultada. El muestreo y los filtros pueden hacer que no representen todas las solicitudes. Para estimaciones o métricas de tráfico, confirma la configuración y semántica de `ItemCount` antes de agregarlo: [muestreo](https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-sampling), [métricas](https://learn.microsoft.com/en-us/azure/azure-monitor/app/metrics-overview).
 
+## Caja de herramientas de Operación Bajo Presión
+
+Adaptación de la página física 13 de la [Charla 2](charla-2.md) para un workspace. Son plantillas **no ejecutadas**. Cada bloque declara su ventana UTC y recurso; sustitúyelos por los del incidente. El recurso es el de Application Insights, no automáticamente el App Service. Si comparas varios componentes, incluye los recursos autorizados pertinentes.
+
+### Solicitudes marcadas como fallidas
+
+```kusto
+let startTime = datetime(2026-10-29T14:00:00Z);
+let endTime = datetime(2026-10-29T14:30:00Z);
+let resourceId = "/subscriptions/REEMPLAZAR/resourceGroups/REEMPLAZAR/providers/microsoft.insights/components/REEMPLAZAR";
+AppRequests
+| where TimeGenerated >= startTime and TimeGenerated < endTime
+| where _ResourceId =~ resourceId
+| where Success == false
+| summarize StoredFailures=count() by Name, ResultCode, AppRoleName
+| order by StoredFailures desc
+```
+
+`Success == false` refleja la clasificación registrada por la instrumentación, no necesariamente solo HTTP 500. Para respuestas 5xx usa el filtro numérico de la sección correspondiente. Fuente: [AppRequests](https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/apprequests).
+
+### Excepciones agrupadas por tipo
+
+```kusto
+let startTime = datetime(2026-10-29T14:00:00Z);
+let endTime = datetime(2026-10-29T14:30:00Z);
+let resourceId = "/subscriptions/REEMPLAZAR/resourceGroups/REEMPLAZAR/providers/microsoft.insights/components/REEMPLAZAR";
+AppExceptions
+| where TimeGenerated >= startTime and TimeGenerated < endTime
+| where _ResourceId =~ resourceId
+| summarize StoredExceptions=count() by ExceptionType, AppRoleName
+| order by StoredExceptions desc
+```
+
+Agrupar por tipo evita reproducir mensajes sensibles en el resumen; para investigar una excepción concreta consulta su mensaje/stack sanitizado y la operación asociada. Los nombres `type`/`outerMessage` de la charla pertenecen al contexto Application Insights, no se copian sin adaptar al workspace. Fuente: [AppExceptions](https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/appexceptions).
+
+### Advertencias y errores de aplicación
+
+```kusto
+let startTime = datetime(2026-10-29T14:00:00Z);
+let endTime = datetime(2026-10-29T14:30:00Z);
+let resourceId = "/subscriptions/REEMPLAZAR/resourceGroups/REEMPLAZAR/providers/microsoft.insights/components/REEMPLAZAR";
+AppTraces
+| where TimeGenerated >= startTime and TimeGenerated < endTime
+| where _ResourceId =~ resourceId
+| where SeverityLevel >= 2
+| project TimeGenerated, SeverityLevel, Message, OperationId, AppRoleName
+| order by TimeGenerated desc
+| take 100
+```
+
+El umbral incluye Warning, Error y Critical, no solo errores. `traces`/`AppTraces` almacena mensajes de aplicación; no equivale por nombre a los spans de una traza distribuida. Sanitiza `Message` antes de compartir. Fuente: [AppTraces](https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/apptraces).
+
+### Dependencias: fallos observados y p95
+
+```kusto
+let startTime = datetime(2026-10-29T14:00:00Z);
+let endTime = datetime(2026-10-29T14:30:00Z);
+let resourceId = "/subscriptions/REEMPLAZAR/resourceGroups/REEMPLAZAR/providers/microsoft.insights/components/REEMPLAZAR";
+AppDependencies
+| where TimeGenerated >= startTime and TimeGenerated < endTime
+| where _ResourceId =~ resourceId
+| summarize StoredCalls=count(), StoredFailures=countif(Success == false),
+    P95Milliseconds=percentile(DurationMs, 95)
+    by Target, DependencyType, AppRoleName
+| order by StoredFailures desc, P95Milliseconds desc
+```
+
+El p95 es de las duraciones observadas, expresado en milisegundos; no demuestra causa raíz. Los conteos y percentiles pueden estar afectados por captura/muestreo. No promediar p95 de grupos distintos ni sumar spans solapados. Fuente: [AppDependencies](https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/appdependencies).
+
 Las consultas KQL son de lectura; los comandos de administración de Kusto son una categoría distinta. Estas plantillas no conceden acceso a un workspace: [KQL](https://learn.microsoft.com/en-us/kusto/query/).

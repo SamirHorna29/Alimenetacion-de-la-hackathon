@@ -22,6 +22,24 @@ La revisión detectó referencias relativas ambiguas en los TOML. Se sustituyero
 
 Esta prueba aplicó instrucciones leídas; no lanzó los perfiles mediante una nueva instancia de Codex. No es una prueba del descubrimiento automático de perfiles.
 
+## Integración de Charla 2 Microsoft
+
+Se leyó el texto extraído de las 25 páginas y se registraron tamaño, SHA-256 y correspondencia de páginas físicas/impresas. No se publicó el PDF original.
+
+El comprobador se amplió a las dos skills y a los siete perfiles requeridos. Pasaron estructura TOML, metadatos del formato simple, enlaces y bloques Markdown. Además de las cuatro pruebas negativas anteriores, detectó nombre incorrecto de la skill Microsoft, prompt de otra skill y ausencia del perfil Microsoft.
+
+Una revisión independiente aplicó las instrucciones actualizadas a tres escenarios nuevos:
+
+| Caso | Resultado |
+| --- | --- |
+| Terraform exitoso, salud 200, catálogo vacío y sin filas de telemetría | No declaró resuelto; diferenció contrato/datos esperados, configuración build/runtime y falta de cobertura, manteniendo solo lectura. |
+| CORS en navegador, curl equivalente 500 y sin OPTIONS visible | Investigó el 500 y CORS por separado; no abrió wildcard con credenciales ni ordenó redeploy general. |
+| Workspace Azure, incidente histórico con dos roles y un fallo posterior | Asignó KQL al especialista Microsoft, conservó ventana/roles y bitácora, y volvió a observar evaluando también una regresión. |
+
+La revisión detectó menciones exclusivas a Dynatrace/DQL en la ficha compartida: se ampliaron a Azure/KQL según plataforma. Se aclaró además que un fallo posterior puede ser regresión, no necesariamente un error antes oculto.
+
+Las consultas siguen siendo plantillas no ejecutadas. Las pruebas de comportamiento aplicaron instrucciones leídas, sin iniciar una nueva sesión de perfiles.
+
 ## Pendiente de comprobar en el entorno
 
 - `quick_validate.py` se intentó ejecutar, pero Python no dispone de PyYAML. Las comprobaciones propias pasaron; no se afirma que el validador oficial pasó.

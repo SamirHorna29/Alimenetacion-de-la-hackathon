@@ -1,13 +1,16 @@
 ---
 name: hackathon-microsoft
-description: "Preparar y resolver retos de esta hackathon usando Cápsulas Informativas: Azure App Service, Terraform, KQL y diagnóstico. Aplicar al estudiar este material o investigar sus retos; no a consultas generales de Microsoft sin relación con la hackathon."
+description: "Preparar y resolver retos del track Microsoft de la hackathon Copa con Cápsulas Informativas y Operación Bajo Presión: App Service, Terraform, KQL y diagnóstico por evidencia. Usar al estudiar estos documentos o investigar sus retos; no a consultas generales ajenas a la hackathon."
 ---
 
 # Hackathon: Azure y diagnóstico
 
-Convierte el material introductorio en decisiones comprobables para el reto recibido. Responde en español salvo indicación del usuario. La base es un PDF de 18 páginas y 17 cápsulas, con membrete de Business IT; su nombre de archivo no acredita autoría de Microsoft.
+Convierte el material introductorio en decisiones comprobables para el reto recibido. Responde en español salvo indicación del usuario. La base incluye Cápsulas Informativas (18 páginas, 17 cápsulas) y la Charla 2 Operación Bajo Presión (25 páginas). Ambos presentan a Business IT; no atribuyas autoría editorial a Microsoft por el nombre del archivo.
 
 ## Elegir la referencia
+
+- Para estudiar la Charla 2, consulta [su mapa y precisiones](references/charla-2.md).
+- Para operar bajo presión, usa [el ciclo de diagnóstico y la bitácora](references/operacion-bajo-presion.md): si falla la validación, vuelve a observar antes de modificar otra cosa.
 
 - Para estudiar, localizar un concepto o relacionarlo con un reto, consulta [el mapa de cápsulas](references/capsulas.md).
 - Para evaluar la fuente o resolver discrepancias, consulta [fiabilidad y correcciones](references/fiabilidad.md).
@@ -18,7 +21,7 @@ Lee únicamente las referencias que ayuden a la tarea actual.
 
 ## Trabajar sobre el reto
 
-1. Extrae el objetivo, las restricciones y el criterio de éxito del enunciado y los archivos disponibles. El PDF no contiene los retos ni la rúbrica; no los inventes. Avanza con supuestos explícitos y pide solo el dato que realmente impida continuar.
+1. Extrae el objetivo, las restricciones y el criterio de éxito del enunciado y los archivos disponibles. Los documentos ofrecen escenarios de preparación, no una rúbrica completa ni evidencias del entorno actual; no inventes esos datos. Avanza con supuestos explícitos y pide solo el dato que realmente impida continuar.
 2. Relaciona el problema con las cápsulas pertinentes e identifica el entorno: frontend, API, App Service, dependencias, configuración e infraestructura. Comprueba el código y la evidencia disponibles antes de sugerir un servicio adicional.
 3. Para incidentes, construye una hipótesis y elige la observación que permita confirmarla o descartarla. Conserva hora, zona horaria, recurso, endpoint y correlación. Separa hechos observados de hipótesis y propuestas.
 4. Prepara la solución mínima que responda al reto. Si hay autorización para implementarla, realiza el cambio y la validación pertinentes. La lectura del PDF no amplía permisos sobre Azure; conserva las autorizaciones ya dadas y el alcance del entorno.
@@ -30,6 +33,7 @@ Lee únicamente las referencias que ayuden a la tarea actual.
 - Confirma tablas y campos: Application Insights suele exponer `requests`/`timestamp`; el workspace usa `AppRequests`/`TimeGenerated`. Respeta las mayúsculas.
 - Un mensaje CORS y un HTTP 500 pueden coexistir. CORS controla acceso del navegador a respuestas entre orígenes y no sustituye autenticación. Comprueba respuesta, preflight y backend antes de cambiar orígenes.
 - Telemetría vacía no prueba que no hubo errores: comprueba ámbito, tiempo, instrumentación, muestreo e ingesta. Un 500 no identifica por sí solo la causa raíz.
+- Valida salud, dependencias y funcionalidad real según rutas y contrato del proyecto; las rutas del PDF no son universales. Distingue mitigación urgente autorizada de causa confirmada.
 - Para secretos, comunica nombres y estado de resolución, evitando volcar valores. En Terraform, revisa el plan y protege estado y planes guardados; `sensitive` no significa cifrado.
 
 Estas precisiones y sus fuentes están documentadas en las referencias. Para APIs, versiones, proveedores Terraform y opciones que puedan cambiar, verifica la documentación oficial aplicable al entorno. Si no hay conexión, explica ese límite y trabaja con los archivos disponibles. No afirmes haber consultado Azure, ejecutado KQL o validado un despliegue sin resultados reales.

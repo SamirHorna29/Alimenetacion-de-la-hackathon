@@ -28,4 +28,6 @@ Casos de evaluación del equipo:
 
 Preparar un relato breve y reproducible: problema del reto → impacto sustentado → observación → decisión/cambio → prueba → límites. Los datos de ejemplo o simulados se identifican como tales. No inventar pérdidas de Copa, pasajeros afectados ni ahorros.
 
+La Charla 2 de Microsoft se integra mediante [su procedimiento](../../hackathon-microsoft/references/operacion-bajo-presion.md). En sus casos, valida la funcionalidad real además de la salud, usa los endpoints existentes y distingue mitigación de causa confirmada. La sesión 2 de Dynatrace permanece pendiente.
+
 Los SLO y la observabilidad de negocio pueden ser ampliaciones posteriores; no se presentan como contenido de la sesión 1. Si el reto los requiere, define indicador, objetivo, población y ventana antes de diseñar paneles, y consulta la documentación oficial correspondiente.

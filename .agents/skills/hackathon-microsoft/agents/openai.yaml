@@ -1,4 +1,4 @@
 interface:
-  display_name: "Hackathon Azure: cápsulas y diagnóstico"
-  short_description: "Prepara y resuelve retos de Azure con evidencia"
-  default_prompt: "Usa $hackathon-microsoft para analizar este reto, verificar los supuestos y proponer una solución con evidencias."
+  display_name: "Hackathon Copa: Azure bajo presión"
+  short_description: "Diagnostica Azure y KQL con evidencia y bitácora"
+  default_prompt: "Usa $hackathon-microsoft para investigar este reto con Operación Bajo Presión, registrar hipótesis y validar la solución."

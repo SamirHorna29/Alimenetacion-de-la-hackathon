@@ -1,6 +1,6 @@
 # Equipo multiagente para la hackathon de Copa
 
-Seis perfiles de Codex comparten la skill `copa-observabilidad` y la síntesis del primer documento. Están diseñados para investigar y ejecutar tareas concretas, conservando evidencia entre agentes.
+Seis perfiles de coordinación y especialidad comparten la skill `copa-observabilidad`; el séptimo perfil, `hackathon_microsoft`, integra Azure y KQL. La base reúne la sesión 1 de Dynatrace, las cápsulas Azure y la Charla 2 de Microsoft, Operación Bajo Presión. Están diseñados para investigar y ejecutar tareas concretas, conservando evidencia entre agentes.
 
 | Agente | Responsabilidad |
 | --- | --- |
@@ -10,6 +10,7 @@ Seis perfiles de Codex comparten la skill `copa-observabilidad` y la síntesis d
 | `copa_dql` | Consultas, correlación y agregación de evidencia. |
 | `copa_implementador` | Cambios autorizados y pruebas de código/configuración/paneles. |
 | `copa_verificador` | Revisión independiente y comprobación del criterio de éxito. |
+| `hackathon_microsoft` | Azure Monitor, Application Insights/KQL, App Service y operación bajo presión. |
 
 ```mermaid
 flowchart TD
@@ -17,16 +18,18 @@ flowchart TD
     C --> I[Infraestructura]
     C --> T[Servicios y trazas]
     C --> Q[Consultas DQL]
+    C --> A[Azure y KQL]
     I --> E[Evidencia integrada]
     T --> E
     Q --> E
+    A --> E
     E --> M[Implementación si corresponde]
     E --> V[Verificación independiente]
     M --> V
     V --> R[Entrega con pruebas y límites]
 ```
 
-No es necesario activar los seis agentes. El agente principal coordina; los especialistas no vuelven a delegar. Se respetan los cupos de la sesión y se trabaja por tandas cuando haga falta. El especialista existente `hackathon_microsoft` puede atender componentes Azure cuando estén presentes.
+No es necesario activar todo el equipo. El agente principal coordina; los especialistas no vuelven a delegar. Se respetan los cupos de la sesión y se trabaja por tandas cuando haga falta. El especialista existente `hackathon_microsoft` puede atender componentes Azure cuando estén presentes.
 
 ## Uso
 
@@ -56,9 +59,20 @@ Los perfiles siguen el formato de [agentes personalizados de Codex](https://lear
 
 Lee [la síntesis y correcciones](../.agents/skills/copa-observabilidad/references/sesion-1.md), [las plantillas DQL](../.agents/skills/copa-observabilidad/references/dql.md) y [los criterios de validación](../.agents/skills/copa-observabilidad/references/validacion.md).
 
-El documento tiene 21 páginas. La corrección principal es que PurePath puede aplicar muestreo; también se precisan la cobertura de OneAgent, los conteos DQL y la diferencia entre correlación y causa raíz. La sesión 2 está anunciada pero no forma parte de esta base.
+El documento de Dynatrace tiene 21 páginas. La corrección principal es que PurePath puede aplicar muestreo; también se precisan la cobertura de OneAgent, los conteos DQL y la diferencia entre correlación y causa raíz. La sesión 2 de Dynatrace está anunciada pero no forma parte de esta base. La Charla 2 de Microsoft es otro documento: sus 25 páginas ya están incorporadas en [el análisis](../.agents/skills/hackathon-microsoft/references/charla-2.md) y [el procedimiento operativo](../.agents/skills/hackathon-microsoft/references/operacion-bajo-presion.md).
 
 Estos archivos no instalan OneAgent ni conectan un tenant. Sin acceso real, el equipo entrega análisis y plantillas; con herramientas y autorización pertinentes puede ejecutar comprobaciones. El PDF original no se publica.
+
+## Incidentes del track Microsoft
+
+```text
+Usa $copa-observabilidad para coordinar este incidente con el método de Operación Bajo Presión.
+Asigna Azure/KQL a hackathon_microsoft, registra hipótesis y pruebas en la bitácora
+y valida la funcionalidad real antes de declarar resuelto el problema.
+Enunciado, evidencias y alcance autorizado: [datos disponibles].
+```
+
+El ciclo es Detectar → Observar → Analizar → Hipótesis → Corregir → Validar. Si la prueba falla, vuelve a observar. Copia la [plantilla de bitácora](../.agents/skills/copa-observabilidad/assets/bitacora-incidente.md) para cada incidente. La plantilla no contiene datos reales.
 
 ## Comprobación local
 

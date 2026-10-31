@@ -1,18 +1,22 @@
 # Base de preparación para la hackathon de Copa
 
-Base de apoyo para los retos, elaborada a partir de `Capsulas Informativas - Microsoft.pdf`. Incluye una skill de Codex, un agente especializado y una revisión de fiabilidad con referencias a las páginas y a documentación primaria.
+Base de apoyo para los retos de Copa con tres documentos: Cápsulas Informativas de Microsoft, Sesión 1 de Dynatrace y Charla 2 de Microsoft, Operación Bajo Presión. Incluye dos skills, siete perfiles de agentes y referencias por página con precisiones contrastadas.
 
 El PDF es útil para aprender los conceptos iniciales. Para operar con ellos se corrigieron el ejemplo de registros recientes en KQL y las simplificaciones sobre tablas, CORS y captura de telemetría. Su membrete dice Business IT; el nombre del archivo no acredita autoría de Microsoft.
 
 ## Equipo multiagente de Copa
 
-La [guía del equipo](docs/equipo-copa.md) presenta seis perfiles para coordinación, infraestructura, servicios/trazas, DQL, implementación y verificación. La base nueva analiza la sesión 1 de Dynatrace y conserva las cápsulas de Azure como especialidad complementaria.
+La [guía del equipo](docs/equipo-copa.md) presenta seis perfiles para coordinación, infraestructura, servicios/trazas, DQL, implementación y verificación. La base integra la sesión 1 de Dynatrace y el especialista Azure/KQL con las cápsulas y Operación Bajo Presión. La Charla 2 de Microsoft no es la sesión 2 pendiente de Dynatrace.
 
 ```text
 Usa $copa-observabilidad y coordina los agentes necesarios para resolver este reto con evidencia: [enunciado].
 ```
 
 Consulta la [skill Copa](.agents/skills/copa-observabilidad/SKILL.md) y el [análisis del primer documento](.agents/skills/copa-observabilidad/references/sesion-1.md). No se requiere acceso a Dynatrace para estudiar; ejecutar consultas y validar el entorno requiere las herramientas y permisos correspondientes.
+
+- [Charla 2: análisis y precisiones](.agents/skills/hackathon-microsoft/references/charla-2.md).
+- [Operación bajo presión](.agents/skills/hackathon-microsoft/references/operacion-bajo-presion.md): ciclo de incidentes y reparto de tareas.
+- [Bitácora reutilizable](.agents/skills/copa-observabilidad/assets/bitacora-incidente.md): hipótesis, cambios, evidencia y validación.
 
 ## Archivos para trabajar
 

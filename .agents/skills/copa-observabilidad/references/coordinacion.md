@@ -6,17 +6,19 @@ Antes de repartir trabajo, redacta una ficha breve. Usa `desconocido` cuando fal
 
 - Objetivo del reto, criterio de éxito y restricciones conocidas.
 - Modo: estudio, diseño, diagnóstico o implementación autorizada.
-- Entorno/tenant y experiencia Dynatrace; acceso real disponible.
+- Entorno/tenant, plataforma y contexto: Dynatrace/Grail/Classic o Azure/Application Insights/workspace; acceso real disponible.
 - Ventana UTC de incidente y, si existe, línea base; conservar zona original.
 - Entidades observadas: clúster, namespace, host, servicio, workload y versiones.
 - Síntoma, resultado esperado/real y evidencias disponibles.
 - Alcance de lectura/escritura, responsable de cada archivo/recurso y plazo.
 
+Para incidentes del track Microsoft aplica el [ciclo de Operación Bajo Presión](../../hackathon-microsoft/references/operacion-bajo-presion.md) y registra el trabajo en una copia de la [bitácora](../assets/bitacora-incidente.md). Si falla la validación, vuelve a observar; conserva las hipótesis refutadas y reábrelas solo con nueva evidencia.
+
 ## Reparto e integración
 
 1. El coordinador elige el mínimo conjunto de especialistas. Una explicación del PDF puede resolverse sin delegación; un incidente con infraestructura y transacciones puede abrir dos líneas independientes.
 2. Entrega a cada agente una pregunta concreta, contexto común, archivos/fuentes permitidos, salida esperada y criterio de fin. Asigna archivos distintos si habrá escrituras.
-3. Infraestructura y servicios pueden investigar en paralelo. DQL apoya las preguntas identificadas; evita que otro agente vuelva a ejecutar exactamente la misma consulta.
+3. Infraestructura y servicios pueden investigar en paralelo. El especialista de consultas apoya las preguntas identificadas: DQL con `copa_dql` o KQL con `hackathon_microsoft`; evita que otro agente vuelva a ejecutar exactamente la misma consulta.
 4. El coordinador integra evidencia y contradicciones. Si dos resultados usan diferentes ventanas, entidades o unidades, normaliza antes de comparar. No decide por mayoría de agentes.
 5. El implementador actúa sobre la hipótesis respaldada o el diseño solicitado, dentro del alcance autorizado. Documenta efecto esperado y reversión proporcional; las credenciales no amplían autorización.
 6. El verificador revisa la solución con evidencia original y cambios, sin editar el trabajo evaluado. Si detecta un defecto concreto, devuélvelo al propietario; no abras rondas de revisión sin nueva evidencia.

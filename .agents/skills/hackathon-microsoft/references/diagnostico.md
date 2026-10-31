@@ -1,6 +1,6 @@
 # Diagnóstico aplicado a los retos
 
-Guía derivada de las cápsulas 5, 9–17. Los casos son posibilidades de diagnóstico; no describen retos confirmados de la hackathon.
+Guía derivada de las cápsulas 5, 9–17, complementada por [Operación Bajo Presión](operacion-bajo-presion.md). Los casos ilustran diagnóstico; no demuestran incidentes del entorno actual ni sustituyen el enunciado.
 
 ## Recorrido y evidencia
 

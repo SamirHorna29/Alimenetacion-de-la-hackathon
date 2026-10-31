@@ -15,13 +15,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / ".agents/skills/copa-observabilidad"
 EXPECTED = {
     "copa_coordinador", "copa_infraestructura", "copa_servicios_trazas",
-    "copa_dql", "copa_implementador", "copa_verificador",
+    "copa_dql", "copa_implementador", "copa_verificador", "hackathon_microsoft",
 }
 
 
 def validate(root=ROOT):
     root = Path(root).resolve()
-    skill = root / ".agents/skills/copa-observabilidad"
     errors = []
     names = set()
     paths = list((root / ".codex/agents").glob("*.toml"))
@@ -41,48 +40,50 @@ def validate(root=ROOT):
     if not EXPECTED.issubset(names):
         errors.append(f"missing agents: {sorted(EXPECTED - names)}")
 
-    try:
-        content = (skill / "SKILL.md").read_text(encoding="utf-8")
-        match = re.match(r"\A---\n(.*?)\n---\n", content, re.S)
-        if not match:
-            raise ValueError("missing frontmatter")
-        fields = {}
-        for line in match[1].splitlines():
-            key, sep, value = line.partition(":")
-            if not sep or key in fields:
-                raise ValueError("invalid or duplicate frontmatter field")
-            fields[key] = value.strip()
-        if fields.get("name") != skill.name:
-            raise ValueError("skill name differs from folder")
-        description = json.loads(fields.get("description", '""'))
-        if not isinstance(description, str) or not description.strip():
-            raise ValueError("missing description")
-    except (ValueError, OSError) as exc:
-        errors.append(f"SKILL.md: {exc}")
+    for skill_name in ("copa-observabilidad", "hackathon-microsoft"):
+        skill = root / ".agents/skills" / skill_name
+        try:
+            content = (skill / "SKILL.md").read_text(encoding="utf-8")
+            match = re.match(r"\A---\n(.*?)\n---\n", content, re.S)
+            if not match:
+                raise ValueError("missing frontmatter")
+            fields = {}
+            for line in match[1].splitlines():
+                key, sep, value = line.partition(":")
+                if not sep or key in fields:
+                    raise ValueError("invalid or duplicate frontmatter field")
+                fields[key] = value.strip()
+            if fields.get("name") != skill.name:
+                raise ValueError("skill name differs from folder")
+            description = json.loads(fields.get("description", '""'))
+            if not isinstance(description, str) or not description.strip():
+                raise ValueError("missing description")
+        except (ValueError, OSError) as exc:
+            errors.append(f"{skill.name}/SKILL.md: {exc}")
 
-    try:
-        lines = (skill / "agents/openai.yaml").read_text(encoding="utf-8").splitlines()
-        if not lines or lines[0] != "interface:":
-            raise ValueError("expected interface mapping")
-        interface = {}
-        for line in lines[1:]:
-            if not line.strip():
-                continue
-            match = re.fullmatch(r"  ([a-z_]+): (.+)", line)
-            if not match or match[1] in interface:
-                raise ValueError("invalid or duplicate interface field")
-            value = json.loads(match[2])
-            if not isinstance(value, str):
-                raise ValueError("interface fields must be quoted strings")
-            interface[match[1]] = value
-        if not interface.get("display_name"):
-            raise ValueError("missing display_name")
-        if not 25 <= len(interface.get("short_description", "")) <= 64:
-            raise ValueError("short_description must have 25-64 characters")
-        if "$copa-observabilidad" not in interface.get("default_prompt", ""):
-            raise ValueError("default_prompt must mention the skill")
-    except (ValueError, OSError) as exc:
-        errors.append(f"openai.yaml: {exc}")
+        try:
+            lines = (skill / "agents/openai.yaml").read_text(encoding="utf-8").splitlines()
+            if not lines or lines[0] != "interface:":
+                raise ValueError("expected interface mapping")
+            interface = {}
+            for line in lines[1:]:
+                if not line.strip():
+                    continue
+                match = re.fullmatch(r"  ([a-z_]+): (.+)", line)
+                if not match or match[1] in interface:
+                    raise ValueError("invalid or duplicate interface field")
+                value = json.loads(match[2])
+                if not isinstance(value, str):
+                    raise ValueError("interface fields must be quoted strings")
+                interface[match[1]] = value
+            if not interface.get("display_name"):
+                raise ValueError("missing display_name")
+            if not 25 <= len(interface.get("short_description", "")) <= 64:
+                raise ValueError("short_description must have 25-64 characters")
+            if f"${skill.name}" not in interface.get("default_prompt", ""):
+                raise ValueError("default_prompt must mention the skill")
+        except (ValueError, OSError) as exc:
+            errors.append(f"{skill.name}/openai.yaml: {exc}")
 
     links = 0
     docs = list(root.rglob("*.md"))
