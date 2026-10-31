@@ -20,6 +20,28 @@ Comprueba las tablas visibles y los campos antes de copiar una consulta. El [mod
 
 Si el workspace reúne varias aplicaciones, añade un filtro por el `_ResourceId` confirmado o por el rol correcto antes de comparar resultados. Evita mezclar incidentes de recursos distintos.
 
+## Incidentes históricos y ámbito del recurso
+
+`ago(30m)` consulta respecto al momento de ejecución; no recuperará un incidente de ayer. Para reconstruirlo, usa inicio y fin fijos en UTC y el identificador del recurso confirmado. Ajusta también el selector temporal del portal para que incluya ese intervalo.
+
+La siguiente plantilla usa fechas ilustrativas y un recurso que debes sustituir. El intervalo incluye el inicio y excluye el fin, para no contar dos veces el límite entre ventanas consecutivas.
+
+```kusto
+let incidentStart = datetime(2026-10-29T14:00:00Z);
+let incidentEnd = datetime(2026-10-29T14:30:00Z);
+let targetResourceId = "/subscriptions/REEMPLAZAR/resourceGroups/REEMPLAZAR/providers/microsoft.insights/components/REEMPLAZAR";
+AppRequests
+| where TimeGenerated >= incidentStart and TimeGenerated < incidentEnd
+| where _ResourceId =~ targetResourceId
+| order by TimeGenerated desc
+| take 50
+| project TimeGenerated, Name, ResultCode, OperationId, AppRoleName, _ResourceId
+```
+
+En esta tabla, `_ResourceId` identifica el recurso de telemetría: confirma su valor en el workspace; no pegues automáticamente el ID del App Service. El rol ayuda a distinguir componentes, pero no sustituye un identificador de recurso cuando varios recursos comparten nombre de rol. Consulta [AppRequests](https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/apprequests) y [filtros where](https://learn.microsoft.com/en-us/kusto/query/where-operator).
+
+Para las demás plantillas, aplica la misma ventana y ámbito antes de ordenar, limitar o agregar. En una traza distribuida, incluye los recursos participantes autorizados: filtrar a uno solo puede ocultar dependencias de otros componentes.
+
 ## Solicitudes más recientes
 
 En Application Insights:
@@ -84,7 +106,7 @@ union withsource=SourceTable AppRequests, AppExceptions, AppDependencies, AppTra
 | take 100
 ```
 
-En Application Insights, el equivalente usa las tablas minúsculas, `timestamp` y `operation_Id`. La correlación depende de que la instrumentación propague el identificador; su ausencia no prueba que los componentes sean independientes.
+En Application Insights, el equivalente usa las tablas minúsculas, `timestamp` y `operation_Id`. La correlación depende de que la instrumentación propague el identificador; su ausencia no prueba que los componentes sean independientes. Si se devuelven exactamente 100 filas, el límite puede haber recortado la operación: amplía el límite o divide el intervalo antes de afirmar que la secuencia está completa.
 
 ## Cantidad de filas observadas por estado
 

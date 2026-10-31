@@ -37,6 +37,6 @@ En Terraform, inspecciona los archivos del proyecto y el proveedor utilizado ant
 
 ## Evidencia de resolución
 
-Repite la operación que falló, registra el resultado y compara el mismo recurso y ventana temporal. Comprueba además que la corrección no oculta el problema original: por ejemplo, un health endpoint que devuelve siempre 200 no demuestra que una dependencia se recuperó.
+Repite la operación que falló sobre el mismo recurso, slot y condiciones de solicitud. Conserva la ventana UTC del incidente y registra otra posterior al cambio para la nueva prueba; usa intervalos de duración comparable si comparas tasas o cantidades. Anota la hora del cambio y los nuevos identificadores de correlación. Volver a consultar únicamente la ventana antigua no valida la recuperación. Comprueba además que la corrección no oculta el problema original: por ejemplo, un health endpoint que devuelve siempre 200 no demuestra que una dependencia se recuperó.
 
 Presenta una nota proporcional al reto: síntoma, evidencia, hipótesis confirmada o pendiente, cambio, resultado de validación y siguiente comprobación. Cuando solo haya acceso al enunciado, entrega un plan de verificación con el resultado esperado de cada comprobación, sin inventar logs ni resultados.

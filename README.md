@@ -14,12 +14,15 @@ El PDF es útil para aprender los conceptos iniciales. Para operar con ellos se 
 
 ## Uso en Codex
 
-Abre esta carpeta como proyecto en Codex. También puedes iniciar el CLI desde PowerShell:
+El material está en la rama `codex/capsulas-skill-agente`; `main` solo contiene el título inicial. Desde una carpeta donde quieras guardar una nueva copia, usa PowerShell con Git y Codex CLI instalados:
 
 ```powershell
-Set-Location -LiteralPath 'C:\Users\SamirHorna\OneDrive\Documentos\GitHub\Alimenetacion-de-la-hackathon'
+git clone --branch codex/capsulas-skill-agente https://github.com/SamirHorna29/Alimenetacion-de-la-hackathon.git
+Set-Location -LiteralPath './Alimenetacion-de-la-hackathon'
 codex
 ```
+
+Si ya tienes una copia, abre su carpeta y comprueba `git status`. Conserva los cambios locales pendientes antes de cambiar de rama; después ejecuta `git fetch origin` y `git switch codex/capsulas-skill-agente`. También puedes abrir esa carpeta como proyecto en la aplicación.
 
 Para estudiar o trabajar sobre un reto:
 
